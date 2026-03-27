@@ -61,10 +61,14 @@ def get_supabase_client():
 
         t = threading.Thread(target=_create, daemon=True)
         t.start()
-        t.join(timeout=10)
+        t.join(timeout=30)  # Increased from 10 to 30 for slow Render environments
 
-        _client = result_holder[0]
-        _initialised = True
+        if result_holder[0] is not None:
+            _client = result_holder[0]
+            _initialised = True
+        else:
+            print("[db.py] ERROR: Timeout or failure connecting to Supabase. Will retry next time.")
+            _initialised = False  # Do not cache a failure state permanently
 
         if _client:
             print(f"[db.py] SUCCESS: Supabase connected -> {url[:50]}...")

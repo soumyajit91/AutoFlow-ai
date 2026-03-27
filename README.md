@@ -77,7 +77,7 @@ To host the *entire* application just as it looks locally with zero refactoring:
 2. Link your GitHub account to a Python-native host like [Render](https://render.com) or [Railway](https://railway.app).
 3. Create a **New Web Service**.
 4. Set the Build Command: `pip install -r requirements.txt`.
-5. Set the Start Command: `streamlit run app.py --server.port $PORT --server.address 0.0.0.0`
+5. Set the Start Command: `bash start.sh` (This automatically bootstraps Ollama, pulls `tinyllama`, and streams the backend).
 6. Securely add your `.env` variables seamlessly inside the platform's **Environment Variables** dashboard interface.
 
 ### 🟡 Optional Component: Vercel Frontend Split

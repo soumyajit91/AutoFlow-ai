@@ -460,7 +460,7 @@ def main_app():
             if provider == "groq":
                 api_key = st.text_input("Groq API Key", type="password", placeholder="gsk_...")
             elif provider == "ollama":
-                st.info("Ensure `ollama run llama3` is running.")
+                st.info("Ensure `ollama run tinyllama` is actively running on host.")
         else:
             provider = "rule_based"
             api_key = ""

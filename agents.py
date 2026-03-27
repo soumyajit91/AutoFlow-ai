@@ -148,19 +148,20 @@ class BaseAgent:
                 return response.choices[0].message.content.strip()
             elif ctx.llm_provider == "ollama":
                 import requests  # type: ignore
-                resp = requests.post(
+                response = requests.post(
                     "http://localhost:11434/api/generate",
-                    json={"model": "llama3", "prompt": prompt, "stream": False},
+                    json={"model": "tinyllama", "prompt": prompt, "stream": False},
                     timeout=60,
                 )
-                resp.raise_for_status()
-                return resp.json().get("response", "").strip()
+                response.raise_for_status()
+                return response.json().get("response", "").strip()
         except Exception as exc:
+            print(f"Fallback triggered: Ollama/LLM failed ({exc})")
             ctx.agent_reasoning.append({
                 "agent":     self.name,
                 "role":      self.role,
                 "step":      "llm_fallback",
-                "reasoning": f"LLM call failed ({exc}). Using rule-based logic.",
+                "reasoning": f"LLM call failed ({exc}). Fallback triggered: Using rule-based logic.",
                 "status":    "warning",
                 "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             })

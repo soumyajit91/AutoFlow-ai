@@ -10,7 +10,7 @@ ENV/
 env/
 
 # Environment variables (CRITICAL: Do not commit!)
-.env
+# .env (Uncomment to ignore)
 
 # Logs and local databases
 logs.json

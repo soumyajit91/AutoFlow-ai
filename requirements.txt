@@ -1,0 +1,6 @@
+streamlit
+supabase
+python-dotenv
+requests
+resend
+# Add any specialized agent libraries (crewai, langchain) below if used

@@ -3,240 +3,215 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Architecture Presentation</title>
+    <title>Architecture Overview</title>
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'dark',
+            securityLevel: 'loose',
+            themeVariables: {
+                fontFamily: "'Inter', sans-serif",
+                primaryColor: '#0a0a0a',
+                primaryTextColor: '#f8fafc',
+                primaryBorderColor: '#333333',
+                lineColor: '#64748b',
+                secondaryColor: '#111',
+                tertiaryColor: '#1a1a1a'
+            }
+        });
+    </script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=JetBrains+Mono:wght@400&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400&display=swap');
 
         :root {
-            --bg-dark: #070914;
-            --brand-primary: #3b82f6;
-            --brand-secondary: #8b5cf6;
-            --brand-accent: #06b6d4;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
+            --bg-dark: #000000;
+            --text-main: #ffffff;
+            --text-muted: #888888;
+            --border-color: #222222;
         }
 
         body, html {
             margin: 0; padding: 0;
             background: var(--bg-dark);
             color: var(--text-main);
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-family: 'Inter', sans-serif;
             overflow-x: hidden;
             scroll-behavior: smooth;
         }
 
-        /* Slide Container */
+        /* Presentation Container */
+        .container {
+            height: 100vh;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+        }
+
         .slide {
             width: 100vw; height: 100vh;
+            scroll-snap-align: start;
             display: flex; flex-direction: column;
-            justify-content: center; align-items: center;
-            position: relative; overflow: hidden;
-            box-sizing: border-box; padding: 4rem 6rem;
+            justify-content: center; align-items: flex-start;
+            box-sizing: border-box; padding: 6rem;
+            position: relative;
+            border-bottom: 1px solid var(--border-color);
         }
 
-        /* Abstract Blob Backgrounds */
-        .blob-1 { position: absolute; top: -10vw; left: -10vw; width: 40vw; height: 40vw; background: radial-gradient(circle, rgba(59,130,246,0.15) 0%, transparent 60%); z-index: -1; }
-        .blob-2 { position: absolute; bottom: -20vw; right: -10vw; width: 50vw; height: 50vw; background: radial-gradient(circle, rgba(139,92,246,0.12) 0%, transparent 60%); z-index: -1; }
-
-        .slide-header {
-            text-align: center; margin-bottom: 3rem; width: 100%;
+        h1 {
+            font-size: 5rem; font-weight: 800; margin: 0 0 1rem;
+            letter-spacing: -0.04em; line-height: 1.1;
         }
-        .slide-header h1 {
-            font-size: 3.5rem; font-weight: 800; margin: 0 0 1rem;
-            background: linear-gradient(135deg, #60a5fa, #c084fc, #22d3ee);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            letter-spacing: -0.03em;
+        h2 {
+            font-size: 3rem; font-weight: 600; margin: 0 0 2rem;
+            letter-spacing: -0.02em; color: #f8fafc;
         }
-        .slide-header p {
-            font-size: 1.4rem; color: var(--text-muted); font-weight: 300; margin: 0;
-            letter-spacing: 0.05em; text-transform: uppercase;
+        p {
+            font-size: 1.5rem; color: var(--text-muted); font-weight: 300; margin: 0;
+            max-width: 800px; line-height: 1.6;
         }
 
-        /* --- SLIDE 1 LAYOUT (Pipeline) --- */
-        .grid-3 {
-            display: grid; grid-template-columns: 1fr 1.5fr 1fr; gap: 2.5rem; width: 100%; max-width: 1400px;
+        /* Abstract Minimalist Grid Lines */
+        .grid-overlay {
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background-image: linear-gradient(var(--border-color) 1px, transparent 1px), linear-gradient(90deg, var(--border-color) 1px, transparent 1px);
+            background-size: 100px 100px; opacity: 0.15; z-index: -1;
+            pointer-events: none;
         }
 
-        .glass-card {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 24px; padding: 2rem;
-            backdrop-filter: blur(12px); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            display: flex; flex-direction: column; align-items: flex-start;
+        /* Minimal Subgrids */
+        .details-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; width: 100%; max-width: 1400px;
+            margin-top: 4rem;
+        }
+        .detail-item {
+            border-left: 2px solid var(--border-color);
+            padding-left: 2rem;
+        }
+        .detail-item h3 {
+            font-size: 1.5rem; font-weight: 600; margin: 0 0 0.5rem;
+            color: var(--text-main);
+            text-transform: uppercase; letter-spacing: 0.05em;
+        }
+        .detail-item p {
+            font-size: 1.1rem; color: var(--text-muted); line-height: 1.6;
         }
 
-        .glass-card h3 {
-            font-size: 1.4rem; font-weight: 600; color: #e2e8f0; margin: 0 0 1.5rem;
-            display: flex; align-items: center; gap: 0.75rem;
+        .diagram-container {
+            width: 100%; height: 60vh;
+            display: flex; justify-content: center; align-items: center;
+            border: 1px solid var(--border-color); background: rgba(5,5,5,0.7);
+            border-radius: 12px; margin-top: 2rem;
         }
-        .glass-card h3 svg { width: 28px; height: 28px; color: var(--brand-primary); }
 
-        .agent-list { width: 100%; display: flex; flex-direction: column; gap: 0.9rem; }
-        .agent-item {
-            background: rgba(0,0,0,0.2); border-left: 3px solid var(--brand-primary);
-            padding: 1rem 1.2rem; border-radius: 0 12px 12px 0;
+        .slide-number {
+            position: absolute; bottom: 3rem; right: 4rem;
+            font-family: 'JetBrains Mono', monospace; color: var(--text-muted); font-size: 1rem;
         }
-        .agent-item.accent { border-left-color: var(--brand-secondary); }
-        .agent-item b { display: block; font-size: 1.1rem; color: #93c5fd; margin-bottom: 0.3rem; }
-        .agent-item.accent b { color: #d8b4fe; }
-        .agent-item span { font-size: 0.95em; color: var(--text-muted); line-height: 1.5; display: block; }
-
-        /* --- SLIDE 2 LAYOUT (Enterprise Reliability) --- */
-        .grid-2 {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; width: 100%; max-width: 1400px;
+        .scroll-indicator {
+            position: absolute; bottom: 3rem; left: 4rem;
+            font-family: 'JetBrains Mono', monospace; color: var(--text-muted); font-size: 0.9rem;
+            text-transform: uppercase; letter-spacing: 0.2em;
         }
-        
-        .metric-box {
-            background: linear-gradient(135deg, rgba(59,130,246,0.1), rgba(139,92,246,0.05));
-            border: 1px solid rgba(59,130,246,0.2); border-radius: 16px;
-            padding: 1.5rem; text-align: center; height: 100%; display: flex; flex-direction: column; justify-content: center;
-        }
-        .metric-value { font-size: 3rem; font-weight: 800; color: #38bdf8; margin-bottom: 0.5rem; }
-        .metric-label { font-size: 1.1rem; color: #cbd5e1; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
-
-        .feature-row { display: flex; align-items: flex-start; gap: 1.5rem; margin-bottom: 2rem; }
-        .feature-icon {
-            background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 16px; 
-            border: 1px solid rgba(255,255,255,0.1); 
-        }
-        .feature-icon svg { width: 32px; height: 32px; color: #22d3ee; }
-        .feature-text h4 { font-size: 1.3rem; font-weight: 600; color: #f8fafc; margin: 0 0 0.5rem; }
-        .feature-text p { font-size: 1.05rem; color: var(--text-muted); line-height: 1.6; margin: 0; }
-
-        .page-num { position: absolute; bottom: 2rem; right: 3rem; font-family: 'JetBrains Mono', monospace; color: rgba(255,255,255,0.2); font-size: 1rem; letter-spacing: 0.2em; }
-        .scrolldown { position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); color: rgba(255,255,255,0.3); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.2em; animation: bounce 2s infinite; }
-        
-        @keyframes bounce { 0%, 100% { transform: translate(-50%, 0); } 50% { transform: translate(-50%, 10px); } }
     </style>
 </head>
 <body>
 
-    <!-- SLIDE 1: Core Architecture -->
-    <div class="slide" id="slide1">
-        <div class="blob-1"></div>
-        <div class="blob-2"></div>
-        
-        <div class="slide-header">
-            <p>Slide 1 / Core AI Architecture</p>
-            <h1>Agentic AI: Autonomous Workflows</h1>
-            <p style="color: #60a5fa; font-size: 1.1rem; margin-top: 1rem; text-transform: none; letter-spacing: normal;">Transforming unstructured enterprise chaos (Meeting Transcripts, HR Onboarding) into verifiable, managed operations.</p>
+    <div class="container">
+        <!-- TITLE SLIDE -->
+        <div class="slide">
+            <div class="grid-overlay"></div>
+            <p style="text-transform: uppercase; letter-spacing: 0.2em; font-size: 1rem; color: #555; margin-bottom: 2rem;">System Overview</p>
+            <h1>Agentic AI:<br>Autonomous Enterprise.</h1>
+            <p>A multi-agent framework designed to natively ingest unstructured operational chaos and securely execute verified business logic with zero-hallucination tolerance.</p>
+            <div class="slide-number">01</div>
+            <div class="scroll-indicator">Scroll down ↓</div>
         </div>
 
-        <div class="grid-3">
-            <!-- Col 1: Inputs -->
-            <div class="glass-card">
-                <h3>
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
-                    01 / Ingestion
-                </h3>
-                <p style="color:#94a3b8; line-height:1.6; font-size: 1.05rem; margin-bottom: 2rem;">
-                    The system accepts unstructured human inputs through a high-performance <b>Streamlit Portal</b>, bridging the gap between chat and traditional ERP forms.
-                </p>
-                <div class="agent-item" style="border-left-color: #64748b;">
-                    <b>A. Meeting-to-Action</b>
-                    <span>Raw conversational transcripts containing implied deliverables.</span>
-                </div>
-                <div class="agent-item" style="border-left-color: #64748b; margin-top: 1rem;">
-                    <b>B. HR Post-Onboarding</b>
-                    <span>Departmental selection requiring cross-referencing for buddy allocation.</span>
-                </div>
+        <!-- COMPLEX DIAGRAM -->
+        <div class="slide">
+            <div class="grid-overlay"></div>
+            <h2>02 / Core Architecture Diagram</h2>
+            <div class="diagram-container">
+                <pre class="mermaid">
+                    graph TD
+                        %% STYLES
+                        classDef ui fill:#0a0a0a,stroke:#444,stroke-width:1px,color:#fff
+                        classDef subagent fill:#111,stroke:#666,stroke-width:1px,color:#fff
+                        classDef db fill:#111,stroke:#555,stroke-dasharray: 4, 4,color:#aaa
+                        classDef exec fill:#eee,stroke:#fff,stroke-width:2px,color:#000
+
+                        %% INFRASTRUCTURE
+                        UI(Streamlit Interface):::ui
+                        UI -.->|Transcript| Memory[Shared Memory Context]:::db
+                        
+                        %% PIPELINE
+                        subgraph "The Autonomous Swarm (Python Execution)"
+                            direction TB
+                            Planner[🧠 Planner Agent]:::subagent -->|Defines Schema| Memory
+                            Extractor[📄 Understanding Agent]:::subagent -->|Unstructured Parsing| Memory
+                            Assigner[👤 Assignment Agent]:::subagent -->|Maps Employee Matrix| Memory
+                            Validator[✅ Validator Agent]:::subagent -->|Ambiguity Guard| Memory
+                            Executor[⚡ Executor Agent]:::exec -->|Reads Verified State| Memory
+                        end
+
+                        %% EXTERNAL COMMITS
+                        Executor -->|Writes Actions| DB[(Supabase PostgreSQL)]:::db
+                        Executor -->|API Payload| Email[SMTP / Resend Routing]:::ui
+
+                        %% FEEDBACK LOOP
+                        Recovery{🔄 Recovery Agent}:::subagent -.->|Intercepts Failures| Executor
+                        Recovery -.->|Exponential Backoff| Executor
+                        
+                        %% OVERSIGHT
+                        Monitor[🚨 Monitoring Agent]:::subagent -->|Scans Stagnant Tasks| DB
+                        Monitor -.->|Escalates SLA Breaches| Email
+                </pre>
             </div>
-
-            <!-- Col 2: The Agent Swarm -->
-            <div class="glass-card" style="border-color: rgba(99, 179, 237, 0.4); box-shadow: 0 0 60px rgba(59, 130, 246, 0.1);">
-                <h3>
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                    02 / The Agent Swarm
-                </h3>
-                <div class="agent-list">
-                    <div class="agent-item accent"><b style="color:#c084fc;">🧠 Planner Agent</b><span>Decomposes the prompt into a precise 6-step sequential operational pipeline.</span></div>
-                    <div class="agent-item accent"><b style="color:#c084fc;">📄 Understanding Agent</b><span>Extracts nuanced tasks via Hybrid-AI (Gemini fallback to Native Rule-Engine).</span></div>
-                    <div class="agent-item accent"><b style="color:#c084fc;">👤 Assignment Agent</b><span>Identifies owners intelligently from database matrices + applies a confidence score.</span></div>
-                    <div class="agent-item accent"><b style="color:#c084fc;">✅ Validator Agent</b><span>Hard-gates execution; halts if ambiguity in task ownership requires human clarification.</span></div>
-                </div>
-            </div>
-
-            <!-- Col 3: Execution & Finality -->
-            <div class="glass-card">
-                <h3>
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"></path></svg>
-                    03 / Execution
-                </h3>
-                <p style="color:#94a3b8; line-height:1.6; font-size: 1.05rem; margin-bottom: 2rem;">
-                    The execution tier isolates computational tasks from business logic, ensuring secure, trackable commits.
-                </p>
-                <div class="agent-item">
-                    <b>⚡ Executor Agent</b>
-                    <span>Pushes final tasks via securely credentialed APIs (Supabase DB, SMTP, Resend).</span>
-                </div>
-                <div class="agent-item" style="margin-top: 1rem;">
-                    <b>📋 Logger Agent</b>
-                    <span>Constructs a structured JSON payload of the entire multi-agent dialogue and archives it for absolute auditability.</span>
-                </div>
-            </div>
-        </div>
-        <div class="page-num">01 / 02</div>
-        <div class="scrolldown">Scroll Down</div>
-    </div>
-
-    <!-- SLIDE 2: Enterprise Reliability (SLA) -->
-    <div class="slide" id="slide2">
-        <div class="blob-1" style="background: radial-gradient(circle, rgba(6,182,212,0.15) 0%, transparent 60%); left: 60vw;"></div>
-        <div class="blob-2" style="background: radial-gradient(circle, rgba(236,72,153,0.1) 0%, transparent 60%); right: 60vw;"></div>
-
-        <div class="slide-header">
-            <p>Slide 2 / Hackathon USP</p>
-            <h1>Enterprise Reliability & SLA Monitoring</h1>
-            <p style="color: #60a5fa; font-size: 1.1rem; margin-top: 1rem; text-transform: none; letter-spacing: normal;">Designed under the absolute assumption that APIs fail, dependencies timeout, and human tasks stall.</p>
+            <div class="slide-number">02</div>
         </div>
 
-        <div class="grid-2">
-            <!-- Feature List -->
-            <div class="glass-card" style="justify-content: center; gap: 0.5rem; border-color: rgba(255,255,255,0.15);">
-                
-                <div class="feature-row">
-                    <div class="feature-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg></div>
-                    <div class="feature-text">
-                        <h4>Asynchronous SLA Monitoring Agent</h4>
-                        <p>Runs asynchronously to system logic. Sweeps the persistent database to detect tasks marked "Unassigned" or stagnant beyond their allowed timeframe. Escalates "SLA BREACH ALERT 🚨" emails directly to IT Command chains automatically.</p>
-                    </div>
+        <!-- AGENT RESPONSIBILITIES -->
+        <div class="slide">
+            <div class="grid-overlay"></div>
+            <h2>03 / The Agent Matrix</h2>
+            <div class="details-grid">
+                <div class="detail-item">
+                    <h3>Planner & Extractor</h3>
+                    <p>Parses linguistic intent natively and delegates pipeline staging. Uses Hybrid-AI (Groq/Ollama) with instant failover to Regex rules.</p>
                 </div>
-
-                <div class="feature-row">
-                    <div class="feature-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg></div>
-                    <div class="feature-text">
-                        <h4>🔄 The Recovery Agent (Self-Healing)</h4>
-                        <p>Executors are wrapped in an exponential 3-strike retry loop. If a database transaction times out or SMTP server refuses connection, the Recovery Agent pauses, retries, and logs the degraded state intelligently without crashing the script.</p>
-                    </div>
+                <div class="detail-item">
+                    <h3>Assignment & Validation</h3>
+                    <p>The safety barrier. Queries human resource endpoints mapped in Supabase and forcefully halts pipeline execution if confidence thresholds fail.</p>
                 </div>
-
-                <div class="feature-row">
-                    <div class="feature-icon" style="border-color: rgba(236,72,153,0.3);"><svg style="color:#f472b6;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg></div>
-                    <div class="feature-text">
-                        <h4>Bulletproof Hybrid-AI Fallbacks</h4>
-                        <p>If the external Generative AI (Google Gemini / Ollama / Groq) runs out of quotas or RAM on the Render instance, the exception is intercepted natively, logging "Fallback Triggered", and parsing organically rolls over to a proprietary <b>Regex Rule-Based Engine</b> seamlessly.</p>
-                    </div>
+                <div class="detail-item">
+                    <h3>The Executor</h3>
+                    <p>Stateless computation that securely acts upon globally verified execution contexts by mutating enterprise database schemas or firing authenticated triggers.</p>
                 </div>
-
-            </div>
-
-            <!-- Dashboard Stats Image Replacement -->
-            <div style="display: flex; flex-direction: column; gap: 2rem;">
-                <!-- Concept metric 1 -->
-                <div class="metric-box">
-                    <div class="metric-value" style="color:#a78bfa;">100%</div>
-                    <div class="metric-label">Traceable Agent Reasoning</div>
-                    <p style="color:#94a3b8; font-size:0.95rem; margin-top:0.8rem;">Every AI decision (e.g. "Selected Employee B because Employee A was unavailable in Supabase") is logged immutably.</p>
-                </div>
-                <!-- Concept metric 2 -->
-                <div class="metric-box" style="background: linear-gradient(135deg, rgba(6,182,212,0.1), rgba(59,130,246,0.05)); border-color: rgba(6,182,212,0.2);">
-                    <div class="metric-value">Stateless</div>
-                    <div class="metric-label">Linux Node Deployment</div>
-                    <p style="color:#94a3b8; font-size:0.95rem; margin-top:0.8rem;">Agents operate completely stateless in memory, capable of seamless horizontal scaling and multi-node Render deployments.</p>
+                <div class="detail-item">
+                    <h3>Audit Logging</h3>
+                    <p>Captures every autonomous decision tree context natively into massive immutable JSON arrays serialized exclusively for compliance checks.</p>
                 </div>
             </div>
+            <div class="slide-number">03</div>
         </div>
-        <div class="page-num">02 / 02</div>
+
+        <!-- ENTERPRISE READINESS -->
+        <div class="slide">
+            <div class="grid-overlay"></div>
+            <h2>04 / Enterprise Fallbacks</h2>
+            <div class="details-grid">
+                <div class="detail-item" style="border-left-color: #555;">
+                    <h3 style="color: #ccc;">Asynchronous SLA</h3>
+                    <p>The Monitoring Agent completely bypasses the real-time execution chain. It queries Supabase every `X` interval to physically flag and mutate "Unassigned" constraints, notifying the Command-Chain IT.</p>
+                </div>
+                <div class="detail-item" style="border-left-color: #fff;">
+                    <h3 style="color: #fff;">Self-Healing Architecture</h3>
+                    <p>Executors are governed by the Recovery Agent. Database rate-limits or SMTP refusals trigger an exponential backoff matrix, absorbing API volatility without destroying operational continuity.</p>
+                </div>
+            </div>
+            <div class="slide-number">04</div>
+        </div>
+
     </div>
 
 </body>
